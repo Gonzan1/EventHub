@@ -1,12 +1,19 @@
-# EventHub
-Web Technologies Project.
+# EventHub - Assignment 2
+Software Engineering Course Project - Universidad de los Andes.
 
 **Team Members:**
-* Tomas Arratia
-* Eduardo Ponce
 * Gonzalo Salinas
+* Tomas Arratia 
+* Eduardo Ponce
 
-**Assignment 1 Repository Structure:**
-* `index.html`: Static landing page.
-* `user_stories.md`: Project user stories.
-* `data_model.png`: Database relational diagram.
+## Project Description
+EventHub is a centralized Rails application designed to create, discover, and join university events. This repository contains the Assignment 2 delivery, which includes the implementation of models, associations, validatons, enums, read-only views, and a seeded database.
+
+## Setup Instructions
+
+To run this application locally, ensure you have Ruby on Rails and PostgreSQL installed.
+
+1. **Clone the repository and navigate to the folder:**
+   ```bash
+   git clone https://github.com/Gonzan1/EventHub
+   cd EventHub
