@@ -1,12 +1,24 @@
-# EventHub
-Web Technologies Project.
+# README
 
-**Team Members:**
-* Tomas Arratia
-* Eduardo Ponce
-* Gonzalo Salinas
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-**Assignment 1 Repository Structure:**
-* `index.html`: Static landing page.
-* `user_stories.md`: Project user stories.
-* `data_model.png`: Database relational diagram.
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

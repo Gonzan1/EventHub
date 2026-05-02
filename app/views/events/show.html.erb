@@ -1,0 +1,57 @@
+<div class="row mb-4">
+  <div class="col">
+    <%= link_to "← Back to Events", events_path, class: "text-decoration-none text-muted mb-3 d-inline-block" %>
+    <h1 class="fw-bold"><%= @event.title %></h1>
+    <span class="badge bg-primary fs-6"><%= @event.category.name %></span>
+    <span class="badge <%= @event.status == 'published' ? 'bg-success' : 'bg-secondary' %> fs-6 ms-2">
+      <%= @event.status.capitalize %>
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="fw-bold">About this event</h4>
+        <p class="text-muted"><%= @event.description %></p>
+      </div>
+    </div>
+
+    <% if @event.reviews.any? %>
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h5 class="fw-bold mb-0">Reviews</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% @event.reviews.each do |review| %>
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between">
+                <strong><%= review.user.email %></strong>
+                <span class="text-warning">
+                  <% review.rating.times do %>★<% end %>
+                </span>
+              </div>
+              <p class="mb-0 text-muted small"><%= review.comment %></p>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Event Details</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><strong>📍 Venue:</strong><br><%= @event.venue.name %> (<%= @event.venue.location %>)</li>
+          <li class="mb-2"><strong>📅 Start:</strong><br><%= @event.start_date.strftime("%B %d, %Y - %H:%M") %></li>
+          <li class="mb-2"><strong>🏁 End:</strong><br><%= @event.end_date.strftime("%B %d, %Y - %H:%M") %></li>
+          <li class="mb-2"><strong>👤 Organizer:</strong><br><%= @event.organizer.email %></li>
+          <li class="mb-2"><strong>👥 Capacity:</strong><br><%= @event.attendees.count %> / <%= @event.capacity %> registered</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
