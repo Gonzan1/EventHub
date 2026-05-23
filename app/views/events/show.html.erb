@@ -1,56 +1,123 @@
+<% if notice %>
+  <div class="alert alert-success shadow-sm"><%= notice %></div>
+<% end %>
+<% if alert %>
+  <div class="alert alert-danger shadow-sm"><%= alert %></div>
+<% end %>
+
 <div class="row mb-4">
   <div class="col">
     <%= link_to "← Back to Events", events_path, class: "text-decoration-none text-muted mb-3 d-inline-block" %>
-    <h1 class="fw-bold"><%= @event.title %></h1>
-    <span class="badge bg-primary fs-6"><%= @event.category.name %></span>
-    <span class="badge <%= @event.status == 'published' ? 'bg-success' : 'bg-secondary' %> fs-6 ms-2">
-      <%= @event.status.capitalize %>
-    </span>
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="fw-bold"><%= @event.title %></h1>
+        <span class="badge bg-primary fs-6"><%= @event.category.name %></span>
+        <span class="badge <%= @event.status == 'published' ? 'bg-success' : (@event.status == 'cancelled' ? 'bg-danger' : 'bg-secondary') %> fs-6 ms-2">
+          <%= @event.status.capitalize %>
+        </span>
+      </div>
+      <% if @event.organizer == current_user %>
+        <div>
+          <%= link_to "Edit Event", edit_event_path(@event), class: "btn btn-outline-dark" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm mb-4 border-0">
       <div class="card-body">
-        <h4 class="fw-bold">About this event</h4>
-        <p class="text-muted"><%= @event.description %></p>
+        <h4 class="fw-bold border-bottom pb-2">About this event</h4>
+        <div class="trix-content mt-3">
+          <%= @event.description %>
+        </div>
       </div>
     </div>
 
-    <% if @event.reviews.any? %>
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-white">
-          <h5 class="fw-bold mb-0">Reviews</h5>
-        </div>
-        <ul class="list-group list-group-flush">
-          <% @event.reviews.each do |review| %>
-            <li class="list-group-item">
-              <div class="d-flex justify-content-between">
-                <strong><%= review.user.email %></strong>
-                <span class="text-warning">
-                  <% review.rating.times do %>★<% end %>
-                </span>
-              </div>
-              <p class="mb-0 text-muted small"><%= review.comment %></p>
-            </li>
-          <% end %>
-        </ul>
+    <div class="card shadow-sm mb-4 border-0">
+      <div class="card-header bg-white">
+        <h5 class="fw-bold mb-0">Reviews</h5>
       </div>
-    <% end %>
+      <div class="card-body">
+        <% if @event.reviews.any? %>
+          <ul class="list-group list-group-flush mb-4">
+            <% @event.reviews.each do |review| %>
+              <li class="list-group-item px-0">
+                <div class="d-flex justify-content-between">
+                  <strong><%= review.user.email %></strong>
+                  <span class="text-warning"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></span>
+                </div>
+                <p class="mb-0 text-muted small"><%= review.comment %></p>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted">No reviews yet.</p>
+        <% end %>
+
+        <% if @event.completed? && @registration&.confirmed? %>
+          <h6 class="fw-bold mt-4 border-top pt-3">Leave a Review</h6>
+          <%= form_with(model: [@event, @new_review], local: true) do |f| %>
+            <div class="mb-3">
+              <%= f.label :rating, "Rating (1 to 5)", class: "form-label fw-bold" %>
+              <%= f.number_field :rating, in: 1..5, class: "form-control", required: true %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :comment, class: "form-label fw-bold" %>
+              <%= f.text_area :comment, class: "form-control", rows: 3, required: true %>
+            </div>
+            <%= f.submit "Submit Review", class: "btn btn-custom-yellow" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <div class="col-md-4">
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm mb-4 border-0 bg-light">
       <div class="card-body">
         <h5 class="fw-bold mb-3">Event Details</h5>
         <ul class="list-unstyled">
-          <li class="mb-2"><strong>📍 Venue:</strong><br><%= @event.venue.name %> (<%= @event.venue.location %>)</li>
-          <li class="mb-2"><strong>📅 Start:</strong><br><%= @event.start_date.strftime("%B %d, %Y - %H:%M") %></li>
-          <li class="mb-2"><strong>🏁 End:</strong><br><%= @event.end_date.strftime("%B %d, %Y - %H:%M") %></li>
-          <li class="mb-2"><strong>👤 Organizer:</strong><br><%= @event.organizer.email %></li>
-          <li class="mb-2"><strong>👥 Capacity:</strong><br><%= @event.attendees.count %> / <%= @event.capacity %> registered</li>
+          <li class="mb-3">
+            <strong>📍 Venue:</strong><br><%= @event.venue.name %>
+          </li>
+          <li class="mb-3">
+            <strong>📅 Start:</strong><br><%= @event.start_date.strftime("%B %d, %Y - %H:%M") %>
+          </li>
+          <li class="mb-3">
+            <strong>🏁 End:</strong><br><%= @event.end_date.strftime("%B %d, %Y - %H:%M") %>
+          </li>
+          <li class="mb-3">
+            <strong>👤 Organizer:</strong><br><%= @event.organizer.email %>
+          </li>
+          <li class="mb-3">
+            <strong>👥 Spots Available:</strong><br>
+            <%= @event.registrations.confirmed.count %> / <%= @event.capacity %> registered
+          </li>
         </ul>
+
+        <hr>
+
+        <% if @registration %>
+          <div class="alert alert-<%= @registration.confirmed? ? 'success' : 'warning' %> text-center">
+            <strong>Status:</strong> <%= @registration.status.capitalize %>
+          </div>
+          <%= button_to "Cancel Registration", event_registration_path(@event, @registration), method: :delete, class: "btn btn-outline-danger w-100 fw-bold", data: { turbo_confirm: "Are you sure you want to cancel your spot?" } %>
+        
+        <% elsif @event.published? %>
+          <% if @event.registrations.confirmed.count < @event.capacity %>
+            <%= button_to "Register Now", event_registrations_path(@event), method: :post, class: "btn btn-custom-yellow w-100 fw-bold" %>
+          <% else %>
+            <%= button_to "Join Waitlist", event_registrations_path(@event), method: :post, class: "btn btn-secondary w-100 fw-bold" %>
+          <% end %>
+          
+        <% else %>
+          <button class="btn btn-secondary w-100 fw-bold" disabled>
+            Registration closed (<%= @event.status %>)
+          </button>
+        <% end %>
       </div>
     </div>
   </div>

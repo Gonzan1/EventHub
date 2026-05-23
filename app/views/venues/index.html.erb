@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+  <h2 class="fw-bold">Manage Venues</h2>
+  <%= link_to "+ New Venue", new_venue_path, class: "btn btn-custom-yellow shadow-sm" %>
+</div>
+
+<div class="card shadow-sm border-0">
+  <ul class="list-group list-group-flush">
+    <% @venues.each do |venue| %>
+      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+        <div>
+          <h5 class="mb-0 fw-bold"><%= venue.name %></h5>
+          <small class="text-muted"><%= venue.location %> | <strong>Capacity:</strong> <%= venue.capacity %></small>
+        </div>
+        <div>
+          <%= link_to "Edit", edit_venue_path(venue), class: "btn btn-sm btn-outline-dark me-2" %>
+          <%= button_to "Delete", venue, method: :delete, class: "btn btn-sm btn-outline-danger inline-block", form: { style: 'display:inline-block;' }, data: { turbo_confirm: "Are you sure?" } %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

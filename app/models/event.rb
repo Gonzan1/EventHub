@@ -7,18 +7,28 @@ class Event < ApplicationRecord
   has_many :attendees, through: :registrations, source: :user
   has_many :reviews, dependent: :destroy
 
+  # ActionText (¡El que acabamos de instalar!)
+  has_rich_text :description
+
   # Validaciones
   validates :title, presence: true
   validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :capacity, presence: true, numericality: { greater_than: 0 }
-  validate :end_date_after_start_date # Validación custom para asegurar que la fecha de fin sea posterior a la fecha de inicio
+  validate :end_date_after_start_date
 
-  # Enum para el estado
-  enum :status, { draft: 0, published: 1, ongoing: 2, completed: 3 }
+  # Enum actualizado con 'cancelled'
+  enum :status, { draft: 0, published: 1, ongoing: 2, completed: 3, cancelled: 4 }
+
+  # Regla: Todo evento nace como draft por defecto
+  after_initialize :set_default_status, if: :new_record?
 
   private
+
+  def set_default_status
+    self.status ||= :draft
+  end
 
   def end_date_after_start_date
     return if end_date.blank? || start_date.blank?

@@ -3,16 +3,18 @@
     <h1 class="fw-bold">Explore Events</h1>
     <p class="text-muted">Discover and join activities around the campus.</p>
   </div>
+  <div class="col-auto">
+    <%= link_to "+ Create Event", new_event_path, class: "btn btn-custom-yellow shadow-sm" %>
+  </div>
 </div>
-
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4">  
   <% @events.each do |event| %>
     <div class="col">
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <span class="badge bg-primary mb-2"><%= event.category.name %></span>
           <h5 class="card-title fw-bold"><%= event.title %></h5>
-          <p class="card-text text-muted small"><%= truncate(event.description, length: 100) %></p>
+          <p class="card-text text-muted small"><%= truncate(event.description.to_plain_text, length: 100) %></p>
           
           <ul class="list-unstyled small mb-0">
             <li><strong>📍 Venue:</strong> <%= event.venue.name %></li>
