@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def create
     @event = Event.find(params[:event_id])
     @registration = @event.registrations.build(user: current_user)

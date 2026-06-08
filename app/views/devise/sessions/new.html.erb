@@ -1,0 +1,36 @@
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm border-0 mt-4">
+      <div class="card-body p-5">
+        <h2 class="text-center fw-bold mb-4">Iniciar Sesión</h2>
+
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="form-group mb-3">
+            <%= f.label :email, "Correo Electrónico", class: "form-label fw-semibold" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "ejemplo@eventhub.com" %>
+          </div>
+
+          <div class="form-group mb-3">
+            <%= f.label :password, "Contraseña", class: "form-label fw-semibold" %>
+            <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "••••••••" %>
+          </div>
+
+          <% if devis_mapping.rememberable? %>
+            <div class="form-check mb-4">
+              <%= f.check_box :remember_me, class: "form-check-input" %>
+              <%= f.label :remember_me, "Recordarme en este equipo", class: "form-check-label text-muted" %>
+            </div>
+          <% end %>
+
+          <div class="d-grid gap-2 mb-3">
+            <%= f.submit "Entrar", class: "btn btn-dark fw-bold py-2" %>
+          </div>
+        <% end %>
+
+        <div class="text-center border-top pt-3">
+          <%= render "devise/shared/links" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
