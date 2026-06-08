@@ -37,3 +37,17 @@ The current data model reflecting the database state can be found in the data_mo
 - Business Logic: * Automated Waitlist management.
    - Review system restricted to attended/completed events.
    - Event lifecycle statuses (Draft, Published, Cancelled, Completed).
+## Test User Credentials
+
+To test the application's authentication and authorization features, use the following credentials:
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | admin@eventhub.com | password123 |
+| **Regular User 1** | user1@eventhub.com | password123 |
+| **Regular User 2** | user2@eventhub.com | password123 |
+
+### Roles and Permissions
+- **Guest (Unauthenticated):** Can only browse events, categories, venues, and read reviews.
+- **Regular User:** Can create events, register for events, write reviews, and edit/cancel their own events/registrations.
+- **Admin:** Full platform moderation capabilities (manage all resources, users, categories, venues, and delete any review).
