@@ -1,4 +1,4 @@
-# EventHub - Assignment 3
+# EventHub - Assignment 4
 
 Software Engineering Course Project - Universidad de los Andes.
 
