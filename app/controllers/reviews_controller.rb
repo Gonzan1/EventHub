@@ -1,4 +1,6 @@
 class ReviewsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def create
     @event = Event.find(params[:event_id])
     @review = @event.reviews.build(review_params)

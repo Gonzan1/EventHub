@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user
-
-  def current_user
-    # Simulacion de estar conectados.
-    @current_user ||= User.find_by(email: 'gsalinas@miuandes.cl') || User.first
+  # Captura el error de CanCanCan y redirige con un mensaje limpio
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, alert: "No tienes autorización para realizar esta acción."
   end
 end
